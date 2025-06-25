@@ -1,0 +1,8 @@
+[04-Mar-2025 03:36:35 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/ifleexco/public_html/beta/erpcloudlite/index.php on line 323
+[04-Mar-2025 03:36:50 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/ifleexco/public_html/beta/erpcloudlite/index.php on line 323
+[04-Mar-2025 03:37:15 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/ifleexco/public_html/beta/erpcloudlite/index.php on line 323
+[04-Mar-2025 03:39:14 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/ifleexco/public_html/beta/erpcloudlite/index.php on line 323
+[04-Mar-2025 03:39:14 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/ifleexco/public_html/beta/erpcloudlite/index.php on line 323
+[04-Mar-2025 03:39:20 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/ifleexco/public_html/beta/erpcloudlite/index.php on line 323
+[04-Mar-2025 03:39:51 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/ifleexco/public_html/beta/erpcloudlite/index.php on line 323
+[04-Mar-2025 03:40:40 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/ifleexco/public_html/beta/erpcloudlite/index.php on line 323
