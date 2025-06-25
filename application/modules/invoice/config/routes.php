@@ -19,6 +19,7 @@ $route['invoice_details/(:num)'] = 'invoice/invoice/bdtask_invoice_details/$1';
 $route['edit_invoice/(:num)']         = "invoice/invoice/bdtask_invoice_form/$1";
 
 $route['edit_invoice2/(:num)']         = "invoice/invoice/bdtask_new_pos/$1";
+$route['dupl_sales']        = "invoice/invoice/bdtask_dupl_sales";
 
 // $route['terms_list'] = 'invoice/invoice/bdtask_terms_list';
 // $route['terms_add'] = 'invoice/invoice/bdtask_terms_form';

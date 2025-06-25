@@ -2774,4 +2774,19 @@ class Invoice extends MX_Controller
             ->get()
             ->result_array();
     }
+    public function bdtask_dupl_sales()
+    {
+        $data['title']         = display('dupl_sales');
+        $data['module']        = "invoice";
+        $data['page']          = "add_invoice_csv";
+        $data['all_pmethod'] = $this->pmethod_dropdown();
+        $data['products'] = $this->active_product();
+        $data['store_list'] = $this->product_model->active_store();
+        if (!$this->permission1->method('dupl_sales', 'create')->access()) {
+            $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
+            redirect($previous_url);
+        }
+        echo modules::run('template/layout', $data);
+    }
+
 }

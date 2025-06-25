@@ -174,8 +174,8 @@
 
 
         <!-- product menu part -->
-        <?php if ($this->permission1->method('create_product', 'create')->access() || $this->permission1->method('add_product_csv', 'create')->access() || $this->permission1->method('manage_product', 'read')->access()) { ?>
-            <li class="treeview <?php echo (($this->uri->segment(1) == "category_form" || $this->uri->segment(1) == "category_list" || $this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list" || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode" || $this->uri->segment(1) == "bulk_products" || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
+        <?php if ($this->permission1->method('create_product', 'create')->access()  || $this->permission1->method('manage_product', 'read')->access()) { ?>
+            <li class="treeview <?php echo (($this->uri->segment(1) == "category_form" || $this->uri->segment(1) == "category_list" || $this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list" || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode"  || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
 
                 <a href="javascript:void(0)">
 
@@ -233,16 +233,7 @@
 
                         </li>
                     <?php } ?>
-                    <?php if ($this->permission1->method('add_product_csv', 'create')->access()) { ?>
-                        <li class="<?php echo (($this->uri->segment(1) == "bulk_products") ? "active" : '') ?>">
-                            <a href="<?php echo base_url('bulk_products') ?>">
-
-                                <?php echo display('add_product_csv') ?>
-
-                            </a>
-
-                        </li>
-                    <?php } ?>
+                  
                     <?php if ($this->permission1->method('manage_product', 'read')->access()) { ?>
                         <li class="<?php echo (($this->uri->segment(1) == "product_list") ? "active" : '') ?>">
                             <a href="<?php echo base_url('product_list') ?>">
@@ -582,6 +573,48 @@
                                             ?>"><a href="<?php echo base_url('invoice_list') ?>"><?php echo display('manage_invoice') ?></a></li>
                     <?php } ?>
 
+                </ul>
+            </li>
+        <?php } ?>
+
+
+         <!-- data uploader menu start -->
+         <?php if ($this->permission1->method('add_product_csv', 'create')->access()||
+         $this->permission1->method('dupl_sales', 'create')->access()) { ?>
+            <li class="treeview <?php
+                                if ($this->uri->segment('1') == ("bulk_products")||$this->uri->segment('1') == ("dupl_sales")) {
+                                    echo "active";
+                                } else {
+                                    echo " ";
+                                }
+                                ?>">
+                <a href="#">
+                    <i class="fa fa-upload"></i><span style="margin-left: 4px;"><?php echo display('datauploader') ?></span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                   <?php if ($this->permission1->method('add_product_csv', 'create')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "bulk_products") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('bulk_products') ?>">
+
+                                <?php echo display('add_product_csv') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('dupl_sales', 'create')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "dupl_sales") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('dupl_sales') ?>">
+
+                                <?php echo display('dupl_sales') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
                 </ul>
             </li>
         <?php } ?>
