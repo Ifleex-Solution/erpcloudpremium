@@ -2779,14 +2779,35 @@ class Invoice extends MX_Controller
         $data['title']         = display('dupl_sales');
         $data['module']        = "invoice";
         $data['page']          = "add_invoice_csv";
-        $data['all_pmethod'] = $this->pmethod_dropdown();
-        $data['products'] = $this->active_product();
-        $data['store_list'] = $this->product_model->active_store();
         if (!$this->permission1->method('dupl_sales', 'create')->access()) {
             $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
             redirect($previous_url);
         }
+       
+        $data['pmetods'] = $this->pmethod_dropdown();
+        $data['products'] = $this->active_product();
+        $data['stores'] = $this->product_model->active_store();
+        $data['customers'] = $this->customer_list();
+        $data['employees'] = $this->employee_list();
+        $data['branches'] = $this->branches();
+
+
+        
         echo modules::run('template/layout', $data);
+    }
+
+     public function branches()
+    {
+        $encryption_key = Config::$encryption_key;
+
+         $this->db->select("id,AES_DECRYPT(name, '{$encryption_key}') AS name")
+                     ->from('branch')
+                     ->where('status', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
     }
 
 }
