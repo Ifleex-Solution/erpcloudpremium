@@ -2028,4 +2028,155 @@ class Invoice_model extends CI_Model
 
         return $response;
     }
+
+
+    public function BulkUpload($postData = null)
+    {
+
+        $response = array();
+
+        $encryption_key = Config::$encryption_key;
+
+     
+
+        ## Read value
+        $draw = $postData['draw'];
+        $start = $postData['start'];
+        $rowperpage = $postData['length']; // Rows display per page
+        $columnIndex = $postData['order'][0]['column']; // Column index
+        $columnName = $postData['columns'][$columnIndex]['id']; // Column name
+        $columnSortOrder = $postData['order'][0]['dir']; // asc or desc
+        $searchValue = $postData['search']['value']; // Search value
+
+        ## Search 
+        $searchQuery = "";
+        if ($searchValue != '') {
+            $searchQuery = " (po.id like '%" . $searchValue . "%' or po.date like '%" . $searchValue . "%' 
+             or   AES_DECRYPT( po.uploaded_id,'" . $encryption_key . "')  like '%" . $searchValue . "%'  
+            or   AES_DECRYPT( po.invoices,'" . $encryption_key . "')  like '%" . $searchValue . "%' 
+            or si.first_name like '%" . $searchValue . "%' or si.last_name like '%" . $searchValue . "%' ) ";
+        }
+
+        ## Total number of records without filtering
+        $this->db->select('count(*) as allcount');
+        $this->db->from('bulk_details po');
+        $this->db->join('users si', 'si.user_id = po.uploadedby', "left");
+       
+       
+        if ($searchValue != '')
+            $this->db->where($searchQuery);
+        $records = $this->db->get()->result();
+        $totalRecords = $records[0]->allcount;
+
+        //     ## Total number of record with filtering
+        $this->db->select('count(*) as allcount');
+        $this->db->from('bulk_details po');
+        $this->db->join('users si', 'si.user_id = po.uploadedby', "left");
+
+
+        if ($searchValue != '')
+            $this->db->where($searchQuery);
+
+
+        $records = $this->db->get()->result();
+        $totalRecordwithFilter = $records[0]->allcount;
+
+
+
+        ## Fetch records
+        $this->db->select('po.id,AES_DECRYPT(po.uploaded_id,"' . $encryption_key . '") AS uploaded_id, 
+         po.date,si.first_name,si.last_name, 
+          AES_DECRYPT(po.invoices,"' . $encryption_key . '") AS invoices');
+        $this->db->from('bulk_details po');
+        $this->db->join('users si', 'si.user_id = po.uploadedby', "left");
+
+        if ($searchValue != '')
+            $this->db->where($searchQuery);
+        $this->db->order_by('po.id', 'desc');
+        $this->db->limit($rowperpage, $start);
+
+        $records = $this->db->get()->result();
+        $data = array();
+        $sl = 1;
+
+        foreach ($records as $record) {
+
+
+            $button = '';
+            $base_url = base_url();
+            $jsaction1 = "return alert('Added Invoice Nos : ".$record->invoices."')";
+            // if ($record->status == 0) {
+            //     $button .= '  <a  style="margin-left:7px;" href="' . $base_url . 'invoice/invoice/update_salestatus/' . $record->id . '" class="btn btn-xs btn-success "  onclick="' . $jsaction . '"><i class="fa fa-check"></i></a>';
+            //     if ($this->permission1->method('manage_invoice', 'update')->access()) {
+            //         $button .= ' <a  style="margin-left:7px;" href="' . $base_url . 'edit_invoice/' . $record->id . '" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('update') . '"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+            //         $button .= ' <a  style="margin-left:7px;" href="' . $base_url . 'edit_invoice2/' . $record->id . '" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('update') . '"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+
+            //     }
+            //     if ($this->permission1->method('manage_invoice', 'delete')->access()) {
+
+            //         $button .= '  <a  style="margin-left:7px;" href="' . $base_url . 'invoice/invoice/delete_sale/' . $record->id . '" class="btn btn-xs btn-danger "  onclick="' . $jsaction . '"><i class="fa fa-trash"></i></a>';
+            //     }
+            // } else {
+            //     $button .= '  <a  style="margin-left:7px;" href="' . $base_url . 'invoice/invoice/update_salestatusredo/' . $record->id . '" class="btn btn-xs btn-warning "  onclick="' . $jsaction . '"><i class="fa fa-repeat"></i></a>';
+            // }
+
+
+            // // $button .= '  <a href="' . $base_url . 'invoice_details/' . $record->id . '" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('invoice') . '"><i class="fa fa-window-restore" aria-hidden="true"></i></a>';
+
+
+            // $button .= '  </button>  <button  style="margin-left:7px;" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="left" title="Reprint" 
+            //     onclick="reprintInvoice(' . $record->id . ')">
+            //     <i class="fa fa-fax" ></i>
+            // </button>';
+
+            // $button .= '  <a style="margin-left:7px;" href="' . $base_url . 'invoice_details/' . $record->id . '" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('invoice') . '"><i class="fa fa-window-restore" aria-hidden="true"></i></a>';
+
+
+            // $link = '  <a style="margin-left:7px;" href="' . $base_url . 'invoice_details/' . $record->id . '"   >' . $record->sale_id . '</a>';
+
+
+                $button .= '   <button  style="margin-left:7px;" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="left" title="Invoices" 
+                onclick="\' . $jsaction1 . \'"
+                >
+               <i class="fa fa-file-text"></i>
+            </button>';
+
+            $button .= '   <button class="btn btn-primary btn-xs" data-toggle="tooltip"
+              onclick="exportToExcel(\'' . $record->invoices . '\')"
+            title="Download">
+                       <i class="fa fa-download"></i>
+                       </button>';
+
+            $button .= '   <button class="btn btn-danger btn-xs" data-toggle="tooltip"
+              onclick="deletesale(\'' . $record->invoices . '\','.$record->id.')"
+            title="Delete">
+                       <i class="fa fa-trash"></i>
+                       </button>';
+
+
+           
+
+
+            $data[] = array(
+                'sl'       => $sl,
+                'uploaded_id'       => $record->uploaded_id,
+                'date'         => $record->date,
+                'invoices' =>   $record->invoices,
+                'name'=>   $record->first_name.' '.$record->last_name,
+                'button'   => '<div >' . $button . '</div>',
+            );
+
+            $sl++;
+        }
+
+        ## Response
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordwithFilter,
+            "aaData" => $data
+        );
+
+        return $response;
+    }
 }

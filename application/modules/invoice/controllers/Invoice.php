@@ -55,7 +55,7 @@ class Invoice extends MX_Controller
         }
     }
 
-     function bdtask_new_pos($id = null)
+    function bdtask_new_pos($id = null)
     {
         $data['title']       = display('new_pos');
         $data['all_customer'] = $this->customer_list();
@@ -2318,7 +2318,7 @@ class Invoice extends MX_Controller
     public function checksales()
     {
         $postData = $this->input->post();
-        $data = $this->invoice_model->sale($postData, $this->input->post('type2'),$this->input->post('branchid'));
+        $data = $this->invoice_model->sale($postData, $this->input->post('type2'), $this->input->post('branchid'));
         echo json_encode($data);
     }
 
@@ -2783,26 +2783,28 @@ class Invoice extends MX_Controller
             $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
             redirect($previous_url);
         }
-       
+
         $data['pmetods'] = $this->pmethod_dropdown();
         $data['products'] = $this->active_product();
         $data['stores'] = $this->product_model->active_store();
         $data['customers'] = $this->customer_list();
         $data['employees'] = $this->employee_list();
         $data['branches'] = $this->branches();
+        $data['invoicesdetails'] = $this->invoices();
 
 
-        
+
+
         echo modules::run('template/layout', $data);
     }
 
-     public function branches()
+    public function branches()
     {
         $encryption_key = Config::$encryption_key;
 
-         $this->db->select("id,AES_DECRYPT(name, '{$encryption_key}') AS name")
-                     ->from('branch')
-                     ->where('status', 1);
+        $this->db->select("id,AES_DECRYPT(name, '{$encryption_key}') AS name")
+            ->from('branch')
+            ->where('status', 1);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result_array();
@@ -2810,4 +2812,300 @@ class Invoice extends MX_Controller
         return false;
     }
 
+    public function invoices()
+    {
+        $encryption_key = Config::$encryption_key;
+
+        $this->db->select("id,AES_DECRYPT(sale_id, '{$encryption_key}') AS sale_id")
+            ->from('sale');
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+    }
+
+
+    public function save_sale2()
+    {
+        $items_b = $this->input->post('items', TRUE);
+        $invoices = $this->input->post('invoice', TRUE);
+
+        $encryption_key = Config::$encryption_key;
+        $lastupdate = date('Y-m-d H:i:s');
+        $num = $this->number_generatorupload();
+
+
+
+        $invoice_ids_string = implode(',', array_column($invoices, 'invoiceId'));
+
+        $query = "
+        INSERT INTO bulk_details 
+        (id,uploaded_id, date, uploadedby,invoices) 
+        VALUES 
+        (0,AES_ENCRYPT('{$num}', '{$encryption_key}') , 
+         '{$lastupdate}',
+         '{$this->session->userdata('id')}',  
+         AES_ENCRYPT('{$invoice_ids_string}', '{$encryption_key}')
+        );";
+
+        $this->db->query($query);
+
+
+        foreach ($invoices as $invoice) {
+            $query = "
+        INSERT INTO sale 
+        (id,sale_id, date, details, type2, discount, total_discount_ammount, total_vat_amnt, grandTotal, total,customer_id,employee_id,payment_type,lastupdateddate,createddate,userid,incidenttype,already,branch) 
+        VALUES 
+        (0,AES_ENCRYPT('{$invoice['invoiceId']}', '{$encryption_key}') , 
+         '{$invoice['date']}',
+         '{$invoice['details']}',  
+         AES_ENCRYPT('{$invoice['type2']}', '{$encryption_key}'), 
+         AES_ENCRYPT('{$invoice['discount']}', '{$encryption_key}'), 
+         AES_ENCRYPT('{$invoice['total_discount_ammount']}', '{$encryption_key}'), 
+         AES_ENCRYPT('{$invoice['total_vat_amnt']}', '{$encryption_key}'), 
+         AES_ENCRYPT('{$invoice['grandTotal']}', '{$encryption_key}'), 
+         AES_ENCRYPT('{$invoice['total']}', '{$encryption_key}'),
+         '{$invoice['customer_id']}',
+         '{$invoice['employee_id']}',
+          '{$invoice['payment']}',
+          '{$lastupdate}',
+          '{$lastupdate}','{$this->session->userdata('id')}',
+           '{$invoice['incidenttype']}',
+            0,
+           '{$invoice['branch']}'
+        );";
+
+            $this->db->query($query);
+
+            $inserted_id = $this->db->insert_id();
+
+            $items = array_filter($items_b, function ($item) use ($invoice) {
+                return $item['invoiceId'] === $invoice['invoiceId'];
+            });
+            foreach ($items as $item) {
+
+                $qu = -$item['quantity'];
+                $query = "
+                        INSERT INTO stock_details 
+                        (id,product, store, stock, type, pid,date) 
+                        VALUES 
+                        (0, 
+                         '{$item['product']}', 
+                         '{$item['store']}', 
+                         AES_ENCRYPT('{$qu}', '{$encryption_key}'),
+                         'sales',
+                         '{$inserted_id}','{$this->input->post('date', TRUE)}'
+                        );
+                    ";
+                $this->db->query($query);
+
+
+
+                $store   =   $this->db->select("auto_gdn")->from('store ')->where('id', $item['store'])->get()->row();
+                if ($store->auto_gdn == 0) {
+                    $query = "
+                            INSERT INTO phystock_details 
+                            (id,product, store, stock, type, pid,date) 
+                            VALUES 
+                            (0, 
+                             '{$item['product']}', 
+                             '{$item['store']}', 
+                             AES_ENCRYPT('{$qu}', '{$encryption_key}'),
+                             'sales',
+                             '{$inserted_id}','{$this->input->post('date', TRUE)}'
+                            );
+                        ";
+                    $this->db->query($query);
+                }
+
+                $query = "
+                        INSERT INTO sale_details 
+                        (id, pid, product, store, quantity, 
+                        product_rate,discount,discount_value,vat_percent,vat_value,total_price,total_discount,all_discount,type2) 
+                        VALUES 
+                        (0, 
+                         '{$inserted_id}', 
+                         '{$item['product']}', 
+                          '{$item['store']}', 
+                         AES_ENCRYPT('{$item['quantity']}', '{$encryption_key}'), 
+                         AES_ENCRYPT('{$item['product_rate']}', '{$encryption_key}'),
+                         AES_ENCRYPT('{$item['discount']}', '{$encryption_key}'), 
+                         AES_ENCRYPT('{$item['discount_value']}', '{$encryption_key}'), 
+                         AES_ENCRYPT('{$item['vat_percent']}', '{$encryption_key}'), 
+                         AES_ENCRYPT('{$item['vat_value']}', '{$encryption_key}'), 
+                          AES_ENCRYPT('{$item['total_price']}', '{$encryption_key}'), 
+                          AES_ENCRYPT('{$item['total_discount']}', '{$encryption_key}'), 
+                          AES_ENCRYPT('{$item['all_discount']}', '{$encryption_key}'),
+                           AES_ENCRYPT('{$this->input->post('type2', TRUE)}', '{$encryption_key}')
+                        );";
+
+                $this->db->query($query);
+            }
+
+            $query = "
+                    INSERT INTO logs (id, screen, operation, pid, userid,lastupdatedate) 
+                    VALUES (
+                        0, 
+                        'sale', 
+                        'insert', 
+                         '{$inserted_id}', 
+                        '{$this->session->userdata('id')}',  '{$lastupdate}'
+                    );
+                ";
+
+            $this->db->query($query);
+        }
+        echo json_encode("Success");
+    }
+
+    public function number_generatorupload()
+    {
+        $encryption_key = Config::$encryption_key;
+
+        $this->db->select_max("AES_DECRYPT(uploaded_id,'" . $encryption_key . "')", 'id');
+        // $this->db->where("AES_DECRYPT(type2,'" . $encryption_key . "')", $type);
+        $query      = $this->db->get('bulk_details');
+        $result     = $query->result_array();
+        $invoice_no = $result[0]['id'];
+        if ($invoice_no != '') {
+            $invoice_no = $invoice_no + 1;
+        } else {
+            $invoice_no = 1000000000;
+        }
+        return $invoice_no;
+    }
+
+
+    public function checkBulkUpload()
+    {
+        $postData = $this->input->post();
+        $data = $this->invoice_model->BulkUpload($postData);
+        echo json_encode($data);
+    }
+
+
+    public function download_bulk()
+    {
+
+        $sale = $this->download($this->input->post('invoices', TRUE));
+        // 
+
+        echo json_encode($sale);
+    }
+
+
+    public function download($invoices)
+    {
+        $encryption_key = Config::$encryption_key;
+
+        return $result = $this->db->select("
+         AES_DECRYPT(sa.sale_id, '" . $encryption_key . "') AS InvoiceId,
+         sa.date AS Date,
+          AES_DECRYPT(ba.name, '" . $encryption_key . "') AS Branch,
+        CASE 
+        WHEN sa.incidenttype = 1 THEN 'Sale'
+        WHEN sa.incidenttype = 2 THEN 'Wholesale'
+        ELSE ''
+    END AS IncidentType,
+      AES_DECRYPT(ci.customer_name, '" . $encryption_key . "') AS Customer,
+      eh.last_name as Employee,
+        pi.product_name as Product,s.name as Store,pi.unit as Unit,
+        AES_DECRYPT(sd.quantity, '" . $encryption_key . "') AS Qty,
+         AES_DECRYPT(sd.product_rate, '" . $encryption_key . "') AS PriceVal,
+         AES_DECRYPT(sd.discount, '" . $encryption_key . "') AS Discount,
+         AES_DECRYPT(sd.vat_percent, '" . $encryption_key . "') AS VAT,
+          AES_DECRYPT(sa.discount, '" . $encryption_key . "') AS SaleDiscount,
+         pt.name as PaymentType,sa.details as Details
+           ")
+            ->from('sale_details sd')
+            ->join('product_information pi', 'pi.id = sd.product', "left")
+            ->join('store s', 's.id = sd.store', "left")
+            ->join('sale sa', 'sa.id = sd.pid', "left")
+            ->join('branch ba', 'ba.id = sa.branch', "left")
+            ->join('customer_information ci', 'ci.customer_id = sa.customer_id', "left")
+            ->join('employee_history eh', 'eh.id = sa.employee_id', "left")
+            ->join('payment_type pt', 'pt.id = sa.payment_type', "left")
+            ->where_in('AES_DECRYPT(sa.sale_id, "' . $encryption_key . '")', $invoices)
+            ->get()
+            ->result_array();
+    }
+
+    public function delete()
+    {
+
+        $invoices = $this->input->post('invoices', TRUE);
+
+        $this->db->where('id',  $this->input->post('id', TRUE))
+                ->delete('bulk_details');
+
+
+        foreach ($invoices as $invoice) {
+
+
+            $this->delete_sale2($invoice);
+
+        }
+
+
+        echo json_encode("Success");
+    }
+
+
+
+    public function delete_sale2($id = null)
+    {
+        $lastupdate = date('Y-m-d H:i:s');
+        $encryption_key = Config::$encryption_key;
+
+        $sale = $this->db->select("id")
+            ->from('sale')
+            ->where("AES_DECRYPT(sale_id,'" . $encryption_key . "')", $id)
+            ->get()
+            ->row();
+        $productExists = $this->db->from('gdn_stock')
+            ->where('voucherno',  $sale->id)
+            ->count_all_results();
+        $base_url = base_url();
+
+
+        if ($productExists > 0) {
+
+        //     echo '<script type="text/javascript">
+        //     alert("Cannot delete this sale detail because this sale detail is linked to it or something went wrong");
+        //     window.location.href = "' . $base_url . 'invoice_list";
+        //    </script>';
+        } else {
+            $this->db->where('pid', $sale->id)
+                ->where('type', 'sales')
+                ->delete('stock_details');
+
+            $this->db->where('pid', $sale->id)
+                ->where('type', 'sales')
+                ->delete('phystock_details');
+
+            $this->db->where('pid', $sale->id)
+                ->delete('sale_details');
+
+            $this->db->where('id', $sale->id)
+                ->delete('sale');
+
+            $this->db->where('voucher_id',  $sale->id)
+                ->where('scenario', 'saleinvoice')
+                ->delete('audit_stock');
+
+            $query = "
+                INSERT INTO logs (id, screen, operation, pid, userid,lastupdatedate) 
+                VALUES (
+                    0, 
+                    'sale', 
+                    'update', 
+                    '{$id}', 
+                    '{$this->session->userdata('id')}',  '{$lastupdate}'
+                );
+            ";
+
+            $this->db->query($query);
+        }
+    }
 }
