@@ -329,7 +329,7 @@ class Product extends MX_Controller
         $data['product_open']   = null;
         #-------------------------------#
         $this->form_validation->set_rules('product_name', display('product_name'), 'required|max_length[200]');
-        $this->form_validation->set_rules('category_id', display('category'), 'required|max_length[20]');
+        $this->form_validation->set_rules('subcategory_id','Subcategory', 'required|max_length[20]');
         $this->form_validation->set_rules('unit', display('unit'), 'required');
         $this->form_validation->set_rules('status', "Status", 'required');
         $this->form_validation->set_rules('store', "Store", 'required');
@@ -396,7 +396,8 @@ class Product extends MX_Controller
             if (empty($id)) {
                 $query = "
     INSERT INTO product_information 
-    (product_id, product_name, category_id, unit, product_vat, serial_no, price, product_model, cost_price, product_details, store, status) 
+    (product_id, product_name, category_id, unit, product_vat, serial_no, price, product_model, cost_price, product_details, 
+    store, status,sprice,subunit,scost_price,subcategory_id,brand_id,oop_id) 
     VALUES 
     ('{$this->input->post('product_id', TRUE)}',
      '{$this->input->post('product_name', TRUE)}',
@@ -409,7 +410,14 @@ class Product extends MX_Controller
      AES_ENCRYPT('{$this->input->post('cost_price', TRUE)}', '{$encryption_key}'),
      '{$this->input->post('description', TRUE)}',
      '{$this->input->post('store', TRUE)}',
-     '{$this->input->post('status', TRUE)}'
+     '{$this->input->post('status', TRUE)}',
+     AES_ENCRYPT('{$this->input->post('sprice', TRUE)}', '{$encryption_key}'),
+          '{$this->input->post('subunit', TRUE)}',
+     AES_ENCRYPT('{$this->input->post('scost_price', TRUE)}', '{$encryption_key}'),
+          '{$this->input->post('subcategory_id', TRUE)}',
+     '{$this->input->post('brand_id', TRUE)}',
+     '{$this->input->post('oop_id', TRUE)}'
+
     );";
 
 
@@ -460,7 +468,10 @@ class Product extends MX_Controller
         cost_price = AES_ENCRYPT('{$this->input->post('cost_price', TRUE)}', '{$encryption_key}'),
         product_details = '{$this->input->post('description', TRUE)}',
         store = '{$this->input->post('store', TRUE)}',
-        status = '{$this->input->post('status', TRUE)}'
+        status = '{$this->input->post('status', TRUE)}',
+        sprice= AES_ENCRYPT('{$this->input->post('sprice', TRUE)}', '{$encryption_key}'),
+        subunit=  '{$this->input->post('subunit', TRUE)}',
+        scost_price= AES_ENCRYPT('{$this->input->post('scost_price', TRUE)}', '{$encryption_key}')
     WHERE id = '{$id}';
 ";
                 if ($this->product_model->update_product($query)) {
@@ -510,7 +521,11 @@ class Product extends MX_Controller
             $data['supplier']      = $this->product_model->supplier_list();
             $data['vattaxinfo']    = $this->product_model->vat_tax_setting();
             $data['id']            =  $id;
-            $data['category_list'] = $this->product_model->active_category();
+            $data['subcategory_list'] = $this->product_model->active_subcategory();
+            $data['brand_list'] = $this->product_model->active_brand();
+            $data['oop_list'] = $this->product_model->active_oop();
+
+
             $data['store_list'] = $this->product_model->active_store();
             $data['unit_list']     = $this->product_model->active_unit();
             $data['supplier_pr']   = $this->product_model->supplier_product_list($id);

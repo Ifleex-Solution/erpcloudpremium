@@ -54,17 +54,17 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group row">
-                            <label for="category_id" class="col-sm-4 col-form-label"><?php echo display('category') ?>
+                            <label for="category_id" class="col-sm-4 col-form-label">Sub<?php echo display('category') ?>
                                 <i class="text-danger">*</i></label>
                             <div class="col-sm-8">
-                                <select class="form-control" id="category_id" required name="category_id" tabindex="3">
+                                <select class="form-control" id="subcategory_id" required name="subcategory_id" tabindex="3">
                                     <option value=""></option>
-                                    <?php if ($category_list) { ?>
-                                        <?php foreach ($category_list as $categories) { ?>
-                                            <option value="<?php echo $categories['category_id'] ?>" <?php if ($product->category_id == $categories['category_id']) {
+                                    <?php if ($subcategory_list) { ?>
+                                        <?php foreach ($subcategory_list as $categories) { ?>
+                                            <option value="<?php echo $categories['subcategory_id'] ?>" <?php if ($product->subcategory_id == $categories['subcategory_id']) {
                                                                                                             echo 'selected';
                                                                                                         } ?>>
-                                                <?php echo $categories['category_name'] ?></option>
+                                                <?php echo $categories['subcategory_name'] ?></option>
 
                                     <?php }
                                     } ?>
@@ -87,7 +87,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group row">
-                            <label for="sell_price" class="col-sm-4 col-form-label">Sale Price
+                            <label for="sell_price" class="col-sm-4 col-form-label">Master Sale Price
                             </label>
                             <div class="col-sm-8">
                                 <input class="form-control text-right" id="sell_price" name="price" type="text" placeholder="0.00" tabindex="5" min="0" value="<?php echo $product->price ?>">
@@ -97,13 +97,42 @@
 
                     <div class="col-sm-6">
                         <div class="form-group row">
-                            <label for="unit" class="col-sm-4 col-form-label"><?php echo display('unit') ?><i class="text-danger">*</i></label>
+                            <label for="sell_price" class="col-sm-4 col-form-label">Sub Sale Price
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control text-right" id="sell_price" name="sprice" type="text" placeholder="0.00" tabindex="5" min="0" value="<?php echo $product->sprice ?>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label for="unit" class="col-sm-4 col-form-label">Master <?php echo display('unit') ?><i class="text-danger">*</i></label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="unit" name="unit" required tabindex="-1" aria-hidden="true">
                                     <option value="">Select One</option>
                                     <?php if ($unit_list) { ?>
                                         <?php foreach ($unit_list as $units) { ?>
                                             <option value="<?php echo $units['unit_name'] ?>" <?php if ($product->unit == $units['unit_name']) {
+                                                                                                    echo 'selected';
+                                                                                                } ?>>
+                                                <?php echo $units['unit_name'] ?></option>
+
+                                    <?php }
+                                    } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label for="unit" class="col-sm-4 col-form-label">Sub <?php echo display('unit') ?><i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="subunit" name="subunit" required tabindex="-1" aria-hidden="true">
+                                    <option value="">Select One</option>
+                                    <?php if ($unit_list) { ?>
+                                        <?php foreach ($unit_list as $units) { ?>
+                                            <option value="<?php echo $units['unit_name'] ?>" <?php if ($product->subunit == $units['unit_name']) {
                                                                                                     echo 'selected';
                                                                                                 } ?>>
                                                 <?php echo $units['unit_name'] ?></option>
@@ -139,6 +168,34 @@
                     <?php
                         // }
                     } ?>
+
+
+                    <?php if (empty($id)) { ?>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label for="cost_price" class="col-sm-4 col-form-label">Sub Purchase Price
+                                </label>
+                                <div class="col-sm-8">
+                                    <input class="form-control text-right" id="scost_price" name="scost_price" type="text" placeholder="0.00" tabindex="5" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    <?php } else {
+                        // foreach ($supplier_pr as $supplier_product) {
+                    ?>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label for="cost_price" class="col-sm-4 col-form-label">Sub Purchase Price
+                                </label>
+                                <div class="col-sm-8">
+                                    <input class="form-control text-right" id="cost_price" name="cost_price" type="text" placeholder="0.00" tabindex="5" min="0" value="<?php echo $product->scost_price ?>">
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                        // }
+                    } ?>
+
                     <div class="col-sm-6">
                         <div class="form-group row">
                             <label for="serial_no" class="col-sm-4 col-form-label"><?php echo display('product_details') ?> </label>
@@ -147,8 +204,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
 
                     <div class="col-sm-6">
                         <div class="form-group row">
@@ -163,6 +218,26 @@
                                                                                                 echo 'selected';
                                                                                             } ?>>
                                                 <?php echo $categories['name'] ?></option>
+                                    <?php }
+                                    } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label for="brand_id" class="col-sm-4 col-form-label">Brand
+                                <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="brand_id" required name="brand_id" tabindex="3">
+                                    <option value=""></option>
+                                    <?php if ($brand_list) { ?>
+                                        <?php foreach ($brand_list as $categories) { ?>
+                                            <option value="<?php echo $categories['brand_id'] ?>" <?php if ($product->brand_id == $categories['brand_id']) {
+                                                                                                            echo 'selected';
+                                                                                                        } ?>>
+                                                <?php echo $categories['brand_name'] ?></option>
 
                                     <?php }
                                     } ?>
@@ -170,6 +245,29 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label for="brand_id" class="col-sm-4 col-form-label">Origin Of Product
+                                <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="oop_id" required name="oop_id" tabindex="3">
+                                    <option value=""></option>
+                                    <?php if ($oop_list) { ?>
+                                        <?php foreach ($oop_list as $categories) { ?>
+                                            <option value="<?php echo $categories['oop_id'] ?>" <?php if ($product->oop_id == $categories['oop_id']) {
+                                                                                                            echo 'selected';
+                                                                                                        } ?>>
+                                                <?php echo $categories['oop_name'] ?></option>
+
+                                    <?php }
+                                    } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="col-sm-6">
                         <div class="form-group row">
                             <label for="status" class="col-sm-4 col-form-label">Status<i class="text-danger">*</i></label>

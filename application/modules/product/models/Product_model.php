@@ -151,6 +151,46 @@ class Product_model extends CI_Model
         return false;
     }
 
+    public function active_subcategory()
+    {
+        $this->db->select('*');
+        $this->db->from('product_subcategory');
+        $this->db->where('status', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+
+        return false;
+    }
+
+    public function active_brand()
+    {
+        $this->db->select('*');
+        $this->db->from('product_brand');
+        $this->db->where('status', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+
+        return false;
+    }
+
+    public function active_oop()
+    {
+        $this->db->select('*');
+        $this->db->from('product_oop');
+        $this->db->where('status', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+
+        return false;
+    }
+
+
     public function active_floorByStore($id)
     {
         $this->db->select('st.id, st.name');
@@ -240,7 +280,12 @@ class Product_model extends CI_Model
     AES_DECRYPT(cost_price, '{$encryption_key}') AS cost_price,
     product_details,
     store,
-    IF(status = 1, 'Active', 'Inactive') as status_label
+    IF(status = 1, 'Active', 'Inactive') as status_label,
+    AES_DECRYPT(sprice, '{$encryption_key}') AS sprice,
+     AES_DECRYPT(scost_price, '{$encryption_key}') AS scost_price,
+     subunit,subcategory_id,brand_id,oop_id
+
+
 ")
             ->from('product_information')
             ->where('id', $id)
@@ -310,14 +355,14 @@ class Product_model extends CI_Model
         $this->db->select("
         a.id as id,
                 a.product_name as product_name,
-                a.product_id as product_id,c.category_name as category_name ,
+                a.product_id as product_id,c.subcategory_name as category_name ,
                 AES_DECRYPT(a.price, '{$encryption_key}') AS price ,
                 AES_DECRYPT(a.cost_price, '{$encryption_key}') AS cost_price,
 IF(a.status = 1, 'Active', 'Inactive') as status_label,s.name as sname");
         $this->db->from('product_information a');
         $this->db->join('store s', 's.id = a.store');
 
-        $this->db->join('product_category c', 'c.category_id = a.category_id');
+        $this->db->join('product_subcategory c', 'c.subcategory_id = a.subcategory_id');
 
 
         if ($searchValue != '')
