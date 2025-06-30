@@ -175,7 +175,11 @@
 
         <!-- product menu part -->
         <?php if ($this->permission1->method('create_product', 'create')->access()  || $this->permission1->method('manage_product', 'read')->access()) { ?>
-            <li class="treeview <?php echo (($this->uri->segment(1) == "category_form" || $this->uri->segment(1) == "category_list" || $this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list" || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode"  || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
+            <li class="treeview <?php echo (($this->uri->segment(1) == "category_form" || $this->uri->segment(1) == "category_list"
+            ||$this->uri->segment(1) == "brand_form" || $this->uri->segment(1) == "brand_list"
+            ||$this->uri->segment(1) == "subcategory_form" || $this->uri->segment(1) == "subcategory_list"
+             ||$this->uri->segment(1) == "oop_form" || $this->uri->segment(1) == "oop_list"
+            || $this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list" || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode"  || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
 
                 <a href="javascript:void(0)">
 
@@ -186,6 +190,43 @@
                 </a>
 
                 <ul class="treeview-menu">
+
+                <?php if ($this->permission1->method('brand_form', 'create')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "brand_form") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('brand_form') ?>"> <?php echo display('add_brand') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('brand_list', 'read')->access() || $this->permission1->method('brand_list', 'update')->access() || $this->permission1->method('brand_list', 'delete')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "brand_list") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('brand_list') ?>">
+
+                                <?php echo display('brand_list') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('oop_form', 'create')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "oop_form") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('oop_form') ?>"> <?php echo display('add_oop') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('oop_list', 'read')->access() || $this->permission1->method('oop_list', 'update')->access() || $this->permission1->method('oop_list', 'delete')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "oop_list") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('oop_list') ?>">
+
+                                <?php echo display('oop_list') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
 
                     <?php if ($this->permission1->method('category', 'create')->access()) { ?>
                         <li class="<?php echo (($this->uri->segment(1) == "category_form") ? "active" : '') ?>">
@@ -205,6 +246,28 @@
 
                         </li>
                     <?php } ?>
+
+                    <?php if ($this->permission1->method('subcategory_form', 'create')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "subcategory_form") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('subcategory_form') ?>"> <?php echo display('add_subcategory') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('subcategory_list', 'read')->access() || $this->permission1->method('subcategory_list', 'update')->access() || $this->permission1->method('subcategory_list', 'delete')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "subcategory_list") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('subcategory_list') ?>">
+
+                                <?php echo display('subcategory_list') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+
+
+
                     <?php if ($this->permission1->method('unit', 'create')->access() || $this->permission1->method('unit', 'update')->access()) { ?>
                         <li class="<?php echo (($this->uri->segment(1) == "unit_form") ? "active" : '') ?>">
                             <a href="<?php echo base_url('unit_form') ?>"> <?php echo display('add_unit') ?>

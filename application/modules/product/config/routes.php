@@ -19,3 +19,19 @@ $route['qrcode/(:any)']        = "product/product/qrgenerator/$1";
 $route['bulk_products']        = "product/product/bdtask_csv_product";
 $route['product_details/(:any)']= "product/product/bdtask_product_details/$1";
 
+
+$route['brand_form']        = "product/product/bdtask_brand_form";
+$route['brand_form/(:num)'] = 'product/product/bdtask_brand_form/$1';
+$route['brand_list']        = "product/product/bdtask_brand_list";
+
+
+$route['oop_form']        = "product/product/bdtask_oop_form";
+$route['oop_form/(:num)'] = 'product/product/bdtask_oop_form/$1';
+$route['oop_list']        = "product/product/bdtask_oop_list";
+
+
+
+$route['subcategory_form']        = "product/product/bdtask_subcategory_form";
+$route['subcategory_form/(:num)'] = 'product/product/bdtask_subcategory_form/$1';
+$route['subcategory_list']        = "product/product/bdtask_subcategory_list";
+

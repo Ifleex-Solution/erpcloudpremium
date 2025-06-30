@@ -76,6 +76,23 @@
                     </div>
                 </div>
 
+                <div class="row">
+
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label for="status" class="col-sm-4 col-form-label">Default Stock Style<i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="dstock" name="dstock" tabindex="-1" aria-hidden="true">
+                                    <option value="">Select One</option>
+                                    <option value="1" <?php echo ($store->dstock == "1") ? 'selected' : ''; ?>>Stock</option>
+                                    <option value="0" <?php echo ($store->dstock == "0") ? 'selected' : ''; ?>>Substock</option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
 
                 <div class="row">

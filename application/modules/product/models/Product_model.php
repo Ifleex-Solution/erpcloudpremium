@@ -477,4 +477,172 @@ IF(a.status = 1, 'Active', 'Inactive') as status_label,s.name as sname");
         }
         return false;
     }
+
+
+
+
+
+
+
+     //brand 
+    public function brand_list()
+    {
+        return $this->db->select('*')
+            ->from('product_brand')
+            ->get()
+            ->result();
+    }
+
+
+    public function create_brand($data = [])
+    {
+        return $this->db->insert('product_brand', $data);
+    }
+
+  
+    public function update_brand($data = [])
+    {
+        return $this->db->where('brand_id', $data['brand_id'])
+            ->update('product_brand', $data);
+    }
+
+    public function single_brand_data($id)
+    {
+        return $this->db->select('*')
+            ->from('product_brand')
+            ->where('brand_id', $id)
+            ->get()
+            ->row();
+    }
+
+    public function delete_brand($id)
+    {
+
+        // $productExists = $this->db->from('product_information')
+        //     ->where('category_id', $id)
+        //     ->count_all_results();
+
+        // if ($productExists > 0) {
+        //     return false;
+        // } 
+        
+        // else {
+            // No products linked, proceed to delete the category
+            $this->db->where('brand_id', $id)
+                ->delete('product_brand');
+            return $this->db->affected_rows() > 0;
+        // }
+    }
+
+
+
+
+
+     //OOP 
+     public function oop_list()
+     {
+         return $this->db->select('*')
+             ->from('product_oop')
+             ->get()
+             ->result();
+     }
+ 
+ 
+     public function create_oop($data = [])
+     {
+         return $this->db->insert('product_oop', $data);
+     }
+ 
+   
+     public function update_oop($data = [])
+     {
+         return $this->db->where('oop_id', $data['oop_id'])
+             ->update('product_oop', $data);
+     }
+ 
+     public function single_oop_data($id)
+     {
+         return $this->db->select('*')
+             ->from('product_oop')
+             ->where('oop_id', $id)
+             ->get()
+             ->row();
+     }
+ 
+     public function delete_oop($id)
+     {
+ 
+         // $productExists = $this->db->from('product_information')
+         //     ->where('category_id', $id)
+         //     ->count_all_results();
+ 
+         // if ($productExists > 0) {
+         //     return false;
+         // } 
+         
+         // else {
+             // No products linked, proceed to delete the category
+             $this->db->where('oop_id', $id)
+                 ->delete('product_oop');
+             return $this->db->affected_rows() > 0;
+         // }
+     }
+
+
+
+
+
+
+
+     //Subcategory 
+     public function subcategory_list()
+     {
+         return $this->db->select('*')
+             ->from('product_subcategory')
+             ->join('product_category', 'product_category.category_id = product_subcategory.category_id') // INNER JOIN by default
+             ->get()
+             ->result();
+     }
+ 
+ 
+     public function create_subcategory($data = [])
+     {
+         return $this->db->insert('product_subcategory', $data);
+     }
+ 
+   
+     public function update_subcategory($data = [])
+     {
+         return $this->db->where('subcategory_id', $data['subcategory_id'])
+             ->update('product_subcategory', $data);
+     }
+ 
+     public function single_subcategory_data($id)
+     {
+         return $this->db->select('*')
+             ->from('product_subcategory')
+             ->where('subcategory_id', $id)
+             ->get()
+             ->row();
+     }
+ 
+     public function delete_subcategory($id)
+     {
+ 
+         // $productExists = $this->db->from('product_information')
+         //     ->where('category_id', $id)
+         //     ->count_all_results();
+ 
+         // if ($productExists > 0) {
+         //     return false;
+         // } 
+         
+         // else {
+             // No products linked, proceed to delete the category
+             $this->db->where('subcategory_id', $id)
+                 ->delete('product_subcategory');
+             return $this->db->affected_rows() > 0;
+         // }
+     }
+
 }

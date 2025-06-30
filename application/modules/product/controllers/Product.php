@@ -875,4 +875,447 @@ class Product extends MX_Controller
         }
         return $con;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Brand part
+    function bdtask_brand_list()
+    {
+        $data['title']      = "Brand List";
+        $data['module']     = "product";
+        $data['page']       = "brand_list";
+        $data["brand_list"] = $this->product_model->brand_list();
+        if (!$this->permission1->method('brand_list', 'read')->access()) {
+            $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
+            redirect($previous_url);
+        }
+        echo modules::run('template/layout', $data);
+    }
+
+
+    public function bdtask_brand_form($id = null)
+    {
+        $data['title'] = display('add_brand');
+        #-------------------------------#
+        $this->form_validation->set_rules('brand_name', "Brand Name", 'required|max_length[200]');
+        $this->form_validation->set_rules('status', display('status'), 'max_length[2]');
+        #-------------------------------#
+        $data['brand'] = (object)$postData = [
+            'brand_id'      => $id,
+            'brand_name'    => $this->input->post('brand_name', true),
+            'status'           => $this->input->post('status', true),
+        ];
+
+        if (!$this->permission1->method('brand_list', 'create')->access()) {
+            $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
+            redirect($previous_url);
+        }
+
+        $base_url = base_url();
+
+        #-------------------------------#
+        if ($this->form_validation->run() === true) {
+
+            #if empty $id then insert data
+            if (empty($id)) {
+                if ($this->product_model->create_brand($postData)) {
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("Brand Details Saved successfully");
+                        window.location.href = "' . $base_url . 'brand_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("Brand Details Saved successfully");
+                        window.location.href = "' . $base_url . 'brand_list";
+                       </script>';
+                    }
+                } else {
+                    $message = display('please_try_again');
+
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'brand_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'brand_list";
+                       </script>';
+                    }
+                }
+            } else {
+                if ($this->product_model->update_brand($postData)) {
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("Brand Details Updated successfully");
+                        window.location.href = "' . $base_url . 'brand_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("Brand Details Updated successfully");
+                        window.location.href = "' . $base_url . 'brand_list";
+                       </script>';
+                    }
+                } else {
+                    $message = display('please_try_again');
+
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'brand_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'brand_list";
+                       </script>';
+                    }
+                }
+            }
+        } else {
+            if (!empty($id)) {
+                $data['title']    = "Edit Brand";
+                $data['brand'] = $this->product_model->single_brand_data($id);
+            }
+            $data['module']   = "product";
+            $data['page']     = "brand_form";
+            echo Modules::run('template/layout', $data);
+        }
+    }
+
+
+
+    public function bdtask_deletebrand($id = null)
+    {
+        $base_url = base_url();
+
+        if ($this->product_model->delete_brand($id)) {
+            echo '<script type="text/javascript">
+            alert("Brand Details Deleted successfully");
+            window.location.href = "' . $base_url . 'brand_list";
+           </script>';
+        } else {
+            echo '<script type="text/javascript">
+            alert("Cannot delete this brand because products are linked to it or something went wrong");
+            window.location.href = "' . $base_url . 'category_list";
+           </script>';
+        }
+    }
+
+
+
+
+
+
+
+
+
+    // OOP part
+    function bdtask_oop_list()
+    {
+        $data['title']      = "Origin Of Product List";
+        $data['module']     = "product";
+        $data['page']       = "oop_list";
+        $data["oop_list"] = $this->product_model->oop_list();
+        if (!$this->permission1->method('oop_list', 'read')->access()) {
+            $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
+            redirect($previous_url);
+        }
+        echo modules::run('template/layout', $data);
+    }
+
+
+    public function bdtask_oop_form($id = null)
+    {
+        $data['title'] = display('add_oop');
+        #-------------------------------#
+        $this->form_validation->set_rules('oop_name', "Origin Of Product", 'required|max_length[200]');
+        $this->form_validation->set_rules('status', display('status'), 'max_length[2]');
+        #-------------------------------#
+        $data['oop'] = (object)$postData = [
+            'oop_id'      => $id,
+            'oop_name'    => $this->input->post('oop_name', true),
+            'status'           => $this->input->post('status', true),
+        ];
+
+        if (!$this->permission1->method('oop_list', 'create')->access()) {
+            $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
+            redirect($previous_url);
+        }
+
+        $base_url = base_url();
+
+        #-------------------------------#
+        if ($this->form_validation->run() === true) {
+
+            #if empty $id then insert data
+            if (empty($id)) {
+                if ($this->product_model->create_oop($postData)) {
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("Origin Of Product Details Saved successfully");
+                        window.location.href = "' . $base_url . 'oop_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("Origin Of Product Details Saved successfully");
+                        window.location.href = "' . $base_url . 'oop_list";
+                       </script>';
+                    }
+                } else {
+                    $message = display('please_try_again');
+
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'oop_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'oop_list";
+                       </script>';
+                    }
+                }
+            } else {
+                if ($this->product_model->update_oop($postData)) {
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("Origin Of Product Details Updated successfully");
+                        window.location.href = "' . $base_url . 'oop_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("Origin Of Product Details Updated successfully");
+                        window.location.href = "' . $base_url . 'oop_list";
+                       </script>';
+                    }
+                } else {
+                    $message = display('please_try_again');
+
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'oop_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'oop_list";
+                       </script>';
+                    }
+                }
+            }
+        } else {
+            if (!empty($id)) {
+                $data['title']    = "Edit Origin Of Product";
+                $data['oop'] = $this->product_model->single_oop_data($id);
+            }
+            $data['module']   = "product";
+            $data['page']     = "oop_form";
+            echo Modules::run('template/layout', $data);
+        }
+    }
+
+
+
+    public function bdtask_deleteoop($id = null)
+    {
+        $base_url = base_url();
+
+        if ($this->product_model->delete_oop($id)) {
+            echo '<script type="text/javascript">
+            alert("Origin Of Product Details Deleted successfully");
+            window.location.href = "' . $base_url . 'oop_list";
+           </script>';
+        } else {
+            echo '<script type="text/javascript">
+            alert("Cannot delete this Origin Of Product because products are linked to it or something went wrong");
+            window.location.href = "' . $base_url . 'oop_list";
+           </script>';
+        }
+    }
+
+
+
+
+
+
+    // Sub Stock part
+    function bdtask_subcategory_list()
+    {
+        $data['title']      = "Subcategory List";
+        $data['module']     = "product";
+        $data['page']       = "subcategory_list";
+        $data["subcategory_list"] = $this->product_model->subcategory_list();
+        if (!$this->permission1->method('subcategory_list', 'read')->access()) {
+            $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
+            redirect($previous_url);
+        }
+        echo modules::run('template/layout', $data);
+    }
+
+
+    public function bdtask_subcategory_form($id = null)
+    {
+        $data['title'] = display('add_subcategory');
+        #-------------------------------#
+        $this->form_validation->set_rules('subcategory_name', "Subcategory", 'required|max_length[200]');
+        $this->form_validation->set_rules('status', display('status'), 'max_length[2]');
+        #-------------------------------#
+        $data['oop'] = (object)$postData = [
+            'subcategory_id'      => $id,
+            'subcategory_name'    => $this->input->post('subcategory_name', true),
+            'category_id'    => $this->input->post('category_id', true),
+            'status'           => $this->input->post('status', true),
+        ];
+
+        if (!$this->permission1->method('subcategory_list', 'create')->access()) {
+            $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
+            redirect($previous_url);
+        }
+
+        $base_url = base_url();
+
+        #-------------------------------#
+        if ($this->form_validation->run() === true) {
+
+            #if empty $id then insert data
+            if (empty($id)) {
+                if ($this->product_model->create_subcategory($postData)) {
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("Subcategory Details Saved successfully");
+                        window.location.href = "' . $base_url . 'subcategory_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("Subcategory Details Saved successfully");
+                        window.location.href = "' . $base_url . 'subcategory_list";
+                       </script>';
+                    }
+                } else {
+                    $message = display('please_try_again');
+
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'subcategory_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'subcategory_list";
+                       </script>';
+                    }
+                }
+            } else {
+                if ($this->product_model->update_subcategory($postData)) {
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("Subcategory Details Updated successfully");
+                        window.location.href = "' . $base_url . 'subcategory_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("Subcategory Details Updated successfully");
+                        window.location.href = "' . $base_url . 'subcategory_list";
+                       </script>';
+                    }
+                } else {
+                    $message = display('please_try_again');
+
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'subcategory_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'subcategory_list";
+                       </script>';
+                    }
+                }
+            }
+        } else {
+            if (!empty($id)) {
+                $data['title']    = "Edit Subcategory";
+                $data['subcategory'] = $this->product_model->single_subcategory_data($id);
+            }
+            $data['category_list'] = $this->product_model->active_category();
+            $data['module']   = "product";
+            $data['page']     = "subcategory_form";
+            echo Modules::run('template/layout', $data);
+        }
+    }
+
+
+
+    public function bdtask_deletesubcategory($id = null)
+    {
+        $base_url = base_url();
+
+        if ($this->product_model->delete_subcategory($id)) {
+            echo '<script type="text/javascript">
+            alert("Subcatgory Details Deleted successfully");
+            window.location.href = "' . $base_url . 'subcategory_list";
+           </script>';
+        } else {
+            echo '<script type="text/javascript">
+            alert("Cannot delete this Subcatgory because products are linked to it or something went wrong");
+            window.location.href = "' . $base_url . 'subcategory_list";
+           </script>';
+        }
+    }
+
 }

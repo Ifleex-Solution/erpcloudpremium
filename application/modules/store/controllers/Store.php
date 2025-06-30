@@ -467,6 +467,8 @@ class Store extends MX_Controller
         $this->form_validation->set_rules('status', "Status", 'required');
         $this->form_validation->set_rules('auto_grn', "Auto GRN", 'required');
         $this->form_validation->set_rules('auto_gdn', "Auto GDN", 'required');
+        $this->form_validation->set_rules('dstock', "Default Stock Style", 'required');
+
 
         #-------------------------------#
         $data['store'] = (object)$postData = [
@@ -475,7 +477,8 @@ class Store extends MX_Controller
             'name'    => $this->input->post('name', true),
             'status'           => $this->input->post('status', true),
             'auto_grn'           => $this->input->post('auto_grn', true),
-            'auto_gdn'           => $this->input->post('auto_gdn', true)
+            'auto_gdn'           => $this->input->post('auto_gdn', true),
+            'dstock'   => $this->input->post('dstock', true)
 
         ];
 

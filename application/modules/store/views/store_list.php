@@ -23,6 +23,8 @@
                                         <th>Store Name</th>
                                         <th>GDN</th>
                                         <th>GRN</th>
+                                        <th>Default Stock Style </th>
+
                                         <th>Status</th>
                                         <th><?php echo display('action') ?> 
                                         </th>
@@ -99,6 +101,7 @@
              { data: 'name'},
              { data: 'auto_gdn' },
              { data: 'auto_grn'},
+             { data: 'dstock'},
              { data: 'status_label' },
              { data: 'button'},
           ],

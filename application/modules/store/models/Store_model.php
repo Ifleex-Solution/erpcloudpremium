@@ -488,7 +488,8 @@ class Store_model extends CI_Model
         ## Fetch records
         $this->db->select("a.*,IF(a.status = 1, 'Active', 'Inactive') as status_label,
         IF(a.auto_gdn = 1, 'Enable', 'Disable') as auto_gdn,
-        IF(a.auto_grn = 1, 'Enable', 'Disable') as auto_grn");
+        IF(a.auto_gdn = 1, 'Enable', 'Disable') as auto_gdn,
+        IF(a.dstock = 1, 'Stock', 'Substock') as dstock");
         $this->db->from('store a');
       //  $this->db->join('storetype c', 'c.id = a.storetype', 'left');
 
@@ -529,6 +530,7 @@ class Store_model extends CI_Model
                 'name'   => $record->name,
                 'auto_gdn'   => $record->auto_gdn,
                 'auto_grn'   => $record->auto_grn,
+                'dstock' => $record->dstock,
                 'status_label' => $status,
                 'button'           => $button,
 
