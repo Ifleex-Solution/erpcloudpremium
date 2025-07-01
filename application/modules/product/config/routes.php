@@ -35,3 +35,7 @@ $route['subcategory_form']        = "product/product/bdtask_subcategory_form";
 $route['subcategory_form/(:num)'] = 'product/product/bdtask_subcategory_form/$1';
 $route['subcategory_list']        = "product/product/bdtask_subcategory_list";
 
+$route['conversionratio_form']        = "product/product/bdtask_conversionratio_form";
+$route['conversionratio_form/(:num)'] = 'product/product/bdtask_conversionratio_form/$1';
+$route['conversionratio_list']        = "product/product/bdtask_conversionratio_list";
+

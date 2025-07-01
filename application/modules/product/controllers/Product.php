@@ -1333,4 +1333,158 @@ class Product extends MX_Controller
         }
     }
 
+
+    // conversion ratio part
+
+    function bdtask_conversionratio_list()
+    {
+        $data['title']      = display('manage_conversion_ratio');
+        $data['module']     = "product";
+        $data['page']       = "conversionratio_list";
+        $data["conversionration_list"] = $this->product_model->conversionration_list();
+        if (!$this->permission1->method('conversionratio_list', 'read')->access()) {
+            $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
+            redirect($previous_url);
+        }
+        echo modules::run('template/layout', $data);
+    }
+
+
+    public function bdtask_conversionratio_form($id = null)
+    {
+        $data['title'] = display('new_conversion_ratio');
+        #-------------------------------#
+        $this->form_validation->set_rules('date', "Date", 'required|max_length[200]');
+        $this->form_validation->set_rules('product_id', "Product", 'required');
+        $this->form_validation->set_rules('conversion_ratio', "Conversion Ratio", 'required');
+
+        #-------------------------------#
+        $data['conversion_ratio'] = (object)$postData = [
+            'conversionratio_id'      => $id,
+            'date'       => $this->input->post('date', true),
+            'product'    => $this->input->post('product_id', true),
+            'conversion_ratio'    => $this->input->post('conversion_ratio', true),
+            'status'     => 1,
+        ];
+
+        if (!$this->permission1->method('conversionratio_list', 'create')->access()) {
+            $previous_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
+            redirect($previous_url);
+        }
+
+
+        $base_url = base_url();
+
+        #-------------------------------#
+        if ($this->form_validation->run() === true) {
+
+            #if empty $id then insert data
+            if (empty($id)) {
+                $data = [
+                    'status' => 0  // or whatever value you want to update
+                ];
+                
+                $this->db->where('product', $this->input->post('product_id', true));
+                $this->db->update('conversion_ratio', $data);
+                if ($this->product_model->create_conversionratio($postData)) {
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("Conversion Ratio Details Saved successfully");
+                        window.location.href = "' . $base_url . 'conversionratio_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("Conversion Ratio Details Saved successfully");
+                        window.location.href = "' . $base_url . 'conversionratio_list";
+                       </script>';
+                    }
+                } else {
+                    $message = display('please_try_again');
+
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'conversionratio_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'conversionratio_list";
+                       </script>';
+                    }
+                }
+            } else {
+                if ($this->product_model->update_conversionratio($postData)) {
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("Conversion Ratio Details Updated successfully");
+                        window.location.href = "' . $base_url . 'conversionratio_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("Conversion Ratio Details Updated successfully");
+                        window.location.href = "' . $base_url . 'conversionratio_list";
+                       </script>';
+                    }
+                } else {
+                    $message = display('please_try_again');
+
+                    if (isset($_POST['add-another'])) {
+                        echo '
+                        <script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'conversionratio_form";
+                       </script>';
+                        exit;
+                    } else {
+
+                        echo '<script type="text/javascript">
+                        alert("' . $message . '");
+                        window.location.href = "' . $base_url . 'conversionratio_list";
+                       </script>';
+                    }
+                }
+            }
+        } else {
+            if (!empty($id)) {
+                $data['title']    = "Edit Conversion Ratio";
+                $data['conversionratio'] = $this->product_model->single_conversionratio_data($id);
+            }
+            $data['products'] = $this->product_model->active_product();
+
+            $data['module']   = "product";
+            $data['page']     = "conversionratio_form";
+            echo Modules::run('template/layout', $data);
+        }
+    }
+
+
+
+    public function bdtask_deleteconversionratio($id = null)
+    {
+        $base_url = base_url();
+
+        if ($this->product_model->delete_conversionratio($id)) {
+            echo '<script type="text/javascript">
+            alert("Conversion Ratio Details Deleted successfully");
+            window.location.href = "' . $base_url . 'conversionration_list";
+           </script>';
+        } else {
+            echo '<script type="text/javascript">
+            alert("Cannot delete this Conversion Ratio because products are linked to it or something went wrong");
+            window.location.href = "' . $base_url . 'conversionration_list";
+           </script>';
+        }
+    }
+
+
 }

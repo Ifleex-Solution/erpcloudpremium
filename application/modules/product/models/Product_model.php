@@ -151,6 +151,19 @@ class Product_model extends CI_Model
         return false;
     }
 
+    public function active_product()
+    {
+        $this->db->select('id,product_name,unit,subunit');
+        $this->db->from('product_information');
+        $this->db->where('status', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+    }
+
+
     public function active_subcategory()
     {
         $this->db->select('*');
@@ -689,5 +702,61 @@ IF(a.status = 1, 'Active', 'Inactive') as status_label,s.name as sname");
              return $this->db->affected_rows() > 0;
          // }
      }
+
+
+
+
+      //Conversion Ratio 
+      public function conversionration_list()
+      {
+          return $this->db->select('*')
+              ->from('conversion_ratio')
+              ->join('product_information', 'product_information.id = conversion_ratio.product') // INNER JOIN by default
+
+              ->get()
+              ->result();
+      }
+  
+  
+      public function create_conversionratio($data = [])
+      {
+          return $this->db->insert('conversion_ratio', $data);
+      }
+  
+    
+      public function update_conversionratio($data = [])
+      {
+          return $this->db->where('conversionratio_id', $data['conversionratio_id'])
+              ->update('conversion_ratio', $data);
+      }
+  
+      public function single_conversionratio_data($id)
+      {
+          return $this->db->select('*')
+              ->from('conversion_ratio')
+              ->where('conversionratio_id', $id)
+              ->get()
+              ->row();
+      }
+  
+      public function delete_conversionratio($id)
+      {
+  
+          // $productExists = $this->db->from('product_information')
+          //     ->where('category_id', $id)
+          //     ->count_all_results();
+  
+          // if ($productExists > 0) {
+          //     return false;
+          // } 
+          
+          // else {
+              // No products linked, proceed to delete the category
+              $this->db->where('conversionratio_id', $id)
+                  ->delete('conversion_ratio');
+              return $this->db->affected_rows() > 0;
+          // }
+      }
+ 
 
 }

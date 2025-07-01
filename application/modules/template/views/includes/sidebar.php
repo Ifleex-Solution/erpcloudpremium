@@ -53,7 +53,7 @@
                 </a>
                 <ul class="treeview-menu">
 
-                   
+
 
                     <?php if ($this->permission1->method('add_store', 'create')->access()) { ?>
                         <li class="<?php echo (($this->uri->segment(1) == "store_form") ? "active" : '') ?>">
@@ -84,8 +84,8 @@
 
         <?php if (
             $this->permission1->method('add_branch', 'create')->access()
-            ||$this->permission1->method('branch_list', 'read')->access()
-           
+            || $this->permission1->method('branch_list', 'read')->access()
+
         ) { ?>
 
             <li class="treeview <?php
@@ -98,7 +98,7 @@
                                 }
                                 ?>">
                 <a href="#">
-                    <i class="ti-home" ></i><span style="margin-left: 10px;"><?php echo display('branch') ?></span>
+                    <i class="ti-home"></i><span style="margin-left: 10px;"><?php echo display('branch') ?></span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -124,7 +124,7 @@
                                             ?>"><a href="<?php echo base_url('branch_list') ?>"><?php echo display('branch_list') ?></a></li>
                     <?php } ?>
 
-                   
+
 
                 </ul>
             </li>
@@ -174,12 +174,17 @@
 
 
         <!-- product menu part -->
-        <?php if ($this->permission1->method('create_product', 'create')->access()  || $this->permission1->method('manage_product', 'read')->access()) { ?>
+        <?php if (
+            $this->permission1->method('create_product', 'create')->access()  || $this->permission1->method('manage_product', 'read')->access()
+            || $this->permission1->method('brand_form', 'create')->access()  || $this->permission1->method('brand_list', 'read')->access()
+            || $this->permission1->method('subcategory_form', 'create')->access()  || $this->permission1->method('subcategory_list', 'read')->access() ||
+            $this->permission1->method('oop_form', 'create')->access()  || $this->permission1->method('oop_list', 'read')->access()
+        ) { ?>
             <li class="treeview <?php echo (($this->uri->segment(1) == "category_form" || $this->uri->segment(1) == "category_list"
-            ||$this->uri->segment(1) == "brand_form" || $this->uri->segment(1) == "brand_list"
-            ||$this->uri->segment(1) == "subcategory_form" || $this->uri->segment(1) == "subcategory_list"
-             ||$this->uri->segment(1) == "oop_form" || $this->uri->segment(1) == "oop_list"
-            || $this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list" || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode"  || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
+                                    || $this->uri->segment(1) == "brand_form" || $this->uri->segment(1) == "brand_list"
+                                    || $this->uri->segment(1) == "subcategory_form" || $this->uri->segment(1) == "subcategory_list"
+                                    || $this->uri->segment(1) == "oop_form" || $this->uri->segment(1) == "oop_list"
+                                    || $this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list" || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode"  || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
 
                 <a href="javascript:void(0)">
 
@@ -191,7 +196,7 @@
 
                 <ul class="treeview-menu">
 
-                <?php if ($this->permission1->method('brand_form', 'create')->access()) { ?>
+                    <?php if ($this->permission1->method('brand_form', 'create')->access()) { ?>
                         <li class="<?php echo (($this->uri->segment(1) == "brand_form") ? "active" : '') ?>">
                             <a href="<?php echo base_url('brand_form') ?>"> <?php echo display('add_brand') ?>
 
@@ -296,7 +301,7 @@
 
                         </li>
                     <?php } ?>
-                  
+
                     <?php if ($this->permission1->method('manage_product', 'read')->access()) { ?>
                         <li class="<?php echo (($this->uri->segment(1) == "product_list") ? "active" : '') ?>">
                             <a href="<?php echo base_url('product_list') ?>">
@@ -310,6 +315,45 @@
 
                 </ul>
 
+            </li>
+        <?php } ?>
+
+        <?php if ($this->permission1->method('conversionratio_form', 'create')->access() || $this->permission1->method('conversionratio_list', 'read')->access()) { ?>
+
+            <li class="treeview <?php
+                                if ($this->uri->segment('1') == ("conversionratio_form") || $this->uri->segment('1') == ("conversionratio_list")) {
+                                    echo "active";
+                                } else {
+                                    echo " ";
+                                }
+                                ?>">
+                <a href="#">
+                    <i class="fa fa-exchange"></i><span style="margin-left: 6px;">Substock Conversion</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <?php if ($this->permission1->method('conversionratio_form', 'create')->access()) { ?>
+                        <li class="treeview <?php
+                                            if ($this->uri->segment('1') == ("conversionratio_form")) {
+                                                echo "active";
+                                            } else {
+                                                echo " ";
+                                            }
+                                            ?>"><a href="<?php echo base_url('conversionratio_form') ?>"><?php echo display('new_conversion_ratio') ?></a></li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('conversionratio_list', 'read')->access()) { ?>
+                        <li class="treeview <?php
+                                            if ($this->uri->segment('1') == ("conversionratio_list")) {
+                                                echo "active";
+                                            } else {
+                                                echo " ";
+                                            }
+                                            ?>"><a href="<?php echo base_url('conversionratio_list') ?>"><?php echo display('manage_conversion_ratio') ?></a></li>
+                    <?php } ?>
+
+                </ul>
             </li>
         <?php } ?>
 
@@ -591,11 +635,13 @@
 
 
         <!-- Invoice menu start -->
-        <?php if ($this->permission1->method('new_invoice', 'create')->access()||
-        $this->permission1->method('new_pos', 'create')->access() 
-        || $this->permission1->method('manage_invoice', 'read')->access()) { ?>
+        <?php if (
+            $this->permission1->method('new_invoice', 'create')->access() ||
+            $this->permission1->method('new_pos', 'create')->access()
+            || $this->permission1->method('manage_invoice', 'read')->access()
+        ) { ?>
             <li class="treeview <?php
-                                if ($this->uri->segment('1') == ("add_invoice")||$this->uri->segment('1') == ("new_pos") || $this->uri->segment('1') == ("invoice_list")  || $this->uri->segment('1') == ("invoice_details") || $this->uri->segment('1') == ("invoice_pad_print") || $this->uri->segment('1') == ("pos_print") || $this->uri->segment('1') == ("invoice_edit")) {
+                                if ($this->uri->segment('1') == ("add_invoice") || $this->uri->segment('1') == ("new_pos") || $this->uri->segment('1') == ("invoice_list")  || $this->uri->segment('1') == ("invoice_details") || $this->uri->segment('1') == ("invoice_pad_print") || $this->uri->segment('1') == ("pos_print") || $this->uri->segment('1') == ("invoice_edit")) {
                                     echo "active";
                                 } else {
                                     echo " ";
@@ -641,11 +687,13 @@
         <?php } ?>
 
 
-         <!-- data uploader menu start -->
-         <?php if ($this->permission1->method('add_product_csv', 'create')->access()||
-         $this->permission1->method('dupl_sales', 'create')->access()) { ?>
+        <!-- data uploader menu start -->
+        <?php if (
+            $this->permission1->method('add_product_csv', 'create')->access() ||
+            $this->permission1->method('dupl_sales', 'create')->access()
+        ) { ?>
             <li class="treeview <?php
-                                if ($this->uri->segment('1') == ("bulk_products")||$this->uri->segment('1') == ("dupl_sales")) {
+                                if ($this->uri->segment('1') == ("bulk_products") || $this->uri->segment('1') == ("dupl_sales")) {
                                     echo "active";
                                 } else {
                                     echo " ";
@@ -658,7 +706,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                   <?php if ($this->permission1->method('add_product_csv', 'create')->access()) { ?>
+                    <?php if ($this->permission1->method('add_product_csv', 'create')->access()) { ?>
                         <li class="<?php echo (($this->uri->segment(1) == "bulk_products") ? "active" : '') ?>">
                             <a href="<?php echo base_url('bulk_products') ?>">
 
@@ -1005,8 +1053,8 @@
                                     || $this->uri->segment('1') == ("db_import") || $this->uri->segment('1') == ("editPhrase") || $this->uri->segment('1') == ("phrases") || $this->uri->segment('1') == ("invoice_wise_tax_report") || $this->uri->segment('1') == ("tax_setting")
                                     || $this->uri->segment('1') == ("income_tax") || $this->uri->segment('1') == ("manage_income_tax")
                                     || $this->uri->segment('1') == ("tax_reports") || $this->uri->segment('1') == ("update_tax_setting")
-                                    || $this->uri->segment('1') == ("vat_tax_setting")||$this->uri->segment('1') == ("user_assign_branch")
-                                    ||$this->uri->segment('1') == ("user_assign_store") 
+                                    || $this->uri->segment('1') == ("vat_tax_setting") || $this->uri->segment('1') == ("user_assign_branch")
+                                    || $this->uri->segment('1') == ("user_assign_store")
                                 ) {
                                     echo "active";
                                 } else {
@@ -1130,7 +1178,7 @@
                         <li class="treeview <?php
                                             if (
                                                 $this->uri->segment('1') == ("add_role") || $this->uri->segment('1') == ("role_list") || $this->uri->segment('1') == ("edit_role") || $this->uri->segment('1') == ("assign_role")
-                                                || $this->uri->segment('1') == ("add_user") || $this->uri->segment('1') == ("user_list")|| $this->uri->segment('1') == ("user_assign_branch")||$this->uri->segment('1') == ("user_assign_store")
+                                                || $this->uri->segment('1') == ("add_user") || $this->uri->segment('1') == ("user_list") || $this->uri->segment('1') == ("user_assign_branch") || $this->uri->segment('1') == ("user_assign_store")
                                             ) {
                                                 echo "active";
                                             } else {
