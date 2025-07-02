@@ -86,50 +86,25 @@
                         </div>
                     </div>
 
-
                     <div class="col-sm-4">
                         <div class="form-group row">
-                            <label for="adress" class="col-sm-4 col-form-label">Customer
+                            <label for="supplier_sss" class="col-sm-4 col-form-label">Branch
+                                <i class="text-danger">*</i>
                             </label>
                             <div class="col-sm-8">
-
-                                <input class='form-control' type='text' id="customerInput" placeholder='Customer Id...' onkeyup='handleCustomerKeyPress(event)' autocomplete='off' />
-                                <input type='text' name='customer_id[]' id='customerId' hidden />
-                                <div id='customerResults1' style='margin-left: 15px;   max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                <!-- <select class="form-control" id="branch" required name="branch" tabindex="3">
 
 
-
-                    <div class="col-sm-4">
-                        <div class="form-group row">
-                            <label for="adress" class="col-sm-4 col-form-label"><?php echo display('details') ?>
-                            </label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" tabindex="4" id="details" name="sale_details" placeholder=" <?php echo display('details') ?>" rows="1" onkeypress='handleDetailKeyPress(event)'></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-sm-4">
-                        <div class="form-group row">
-                            <label for="supplier_sss" class="col-sm-4 col-form-label">Employee
-                            </label>
-                            <div class="col-sm-8">
-                                <input class='form-control' type='text' id="employeeInput" placeholder='Employee...' onkeyup='handleEmployeeKeyPress(event)' autocomplete='off' />
-                                <input type='text' name='customer_id[]' id='employeeId' hidden />
-                                <div id='employeeResults1' style='margin-left: 15px;    max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'>
+                                </select> -->
+                                <input class='form-control' type='text' id="branchInput" placeholder='Branch...' onkeyup='handleBranchKeyPress(event)' autocomplete='off' />
+                                <input type='text' name='customer_id[]' id='branchId' hidden />
+                                <div id='branchResults1' style='margin-left: 15px;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'>
 
                                 </div>
                             </div>
 
                         </div>
+
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group row">
@@ -153,20 +128,40 @@
                         </div>
 
                     </div>
+                </div>
+
+
+
+
+
+
+
+
+
+                <div class="row">
 
                     <div class="col-sm-4">
                         <div class="form-group row">
-                            <label for="supplier_sss" class="col-sm-4 col-form-label">Branch
-                                <i class="text-danger">*</i>
+                            <label for="adress" class="col-sm-4 col-form-label">Customer
                             </label>
                             <div class="col-sm-8">
-                                <!-- <select class="form-control" id="branch" required name="branch" tabindex="3">
 
+                                <input class='form-control' type='text' id="customerInput" placeholder='Customer Id...' onkeyup='handleCustomerKeyPress(event)' autocomplete='off' />
+                                <input type='text' name='customer_id[]' id='customerId' hidden />
+                                <div id='customerResults1' style='margin-left: 15px;   max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'>
 
-                                </select> -->
-                                <input class='form-control' type='text' id="branchInput" placeholder='Branch...' onkeyup='handleBranchKeyPress(event)' autocomplete='off' />
-                                <input type='text' name='customer_id[]' id='branchId' hidden />
-                                <div id='branchResults1' style='margin-left: 15px;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group row">
+                            <label for="supplier_sss" class="col-sm-4 col-form-label">Employee
+                            </label>
+                            <div class="col-sm-8">
+                                <input class='form-control' type='text' id="employeeInput" placeholder='Employee...' onkeyup='handleEmployeeKeyPress(event)' autocomplete='off' />
+                                <input type='text' name='customer_id[]' id='employeeId' hidden />
+                                <div id='employeeResults1' style='margin-left: 15px;    max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'>
 
                                 </div>
                             </div>
@@ -174,7 +169,23 @@
                         </div>
 
                     </div>
+                    <div class="col-sm-4">
+                        <div class="form-group row">
+                            <label for="adress" class="col-sm-4 col-form-label"><?php echo display('details') ?>
+                            </label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" tabindex="4" id="details" name="sale_details" placeholder=" <?php echo display('details') ?>" rows="1" onkeyup='handleDetailKeyPress(event)'></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
+
+
+
+
+
 
                 <div class="row">
                     <div class="col-sm-4">
@@ -254,14 +265,29 @@
                                 </td>
 
                                 <td class="qty">
-                                    <input type="text" name="unit[]" onkeyup="product_search(0,'unit');"
-                                        class="total_qntt_1 form-control text-right"
-                                        id="unit0" value="" min="0" readonly />
+                                    <div style='position: relative; display: inline-block;'>
+
+                                        <input type="text" name="unit[]"
+                                            class="total_qntt_1 form-control text-right"
+                                            id="unit0" value="" min="0" onkeyup='handleUnitKeyPress(event)' />
+                                        <div id='unitResults1' style='  width: 100%;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;' autocomplete='off'>
+
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="qty">
                                     <input type="number" name="avqty[]" onkeyup="product_search(0,'avqty');"
                                         class="total_qntt_1 form-control text-right"
                                         id="avqty0" placeholder="0.00" min="0" readonly />
+                                    <input type="hidden" name="avqty[]"
+                                        class="total_qntt_1 form-control text-right"
+                                        id="unittype0" placeholder="0.00" min="0" hidden />
+                                    <input type="hidden" name="avqty[]"
+                                        class="total_qntt_1 form-control text-right"
+                                        id="conversionratio0" placeholder="0.00" min="0" hidden />
+                                    <input type="hidden" name="avqty[]"
+                                        class="total_qntt_1 form-control text-right"
+                                        id="conversion_id0" placeholder="0.00" min="0" hidden />
                                 </td>
 
 
@@ -332,6 +358,17 @@
 
                                     <td class="qty">
                                         <p id="avqty<?php echo $i; ?>" style="text-align: center;font-weight: bold;"></p>
+                                        <input type="hidden" name="avqty[]"
+                                            class="total_qntt_1 form-control text-right"
+                                            id="unittype<?php echo $i; ?>" placeholder="0.00" min="0" hidden />
+                                        <input type="hidden" name="avqty[]"
+                                            class="total_qntt_1 form-control text-right"
+                                            id="conversionratio<?php echo $i; ?>" placeholder="0.00" min="0" hidden />
+                                        <input type="hidden" name="avqty[]"
+                                            class="total_qntt_1 form-control text-right"
+                                            id="conversion_id<?php echo $i; ?>" placeholder="0.00" min="0" hidden />
+
+
                                     </td>
 
                                     <td class="qty">
@@ -511,7 +548,7 @@
 
                 </div>
 
-                
+
             </div>
         </div>
 
@@ -593,17 +630,17 @@ echo "</script>";
                 highlightItemcustomer(currentIndex);
             }
         } else if (event.key === 'ArrowLeft') {
-            let element2 = document.getElementById("date");
+            let element2 = document.getElementById("incidentTypeInput");
             element2.focus();
-            document.getElementById('date').select()
+            document.getElementById('incidentTypeInput').select()
 
         } else if (event.key === 'Enter') {
 
             if (document.getElementById('customerId').value != "") {
 
-                let element2 = document.getElementById("details");
+                let element2 = document.getElementById("employeeInput");
                 element2.focus();
-                document.getElementById('details').select()
+                document.getElementById('employeeInput').select()
 
 
             }
@@ -633,16 +670,15 @@ echo "</script>";
 
     function handleDetailKeyPress(event) {
         if (event.key === 'Enter') {
+            let element2 = document.getElementById("productInput");
+            element2.focus();
+            document.getElementById('productInput').select()
+
+        } else if (event.key === 'ArrowLeft') {
             event.preventDefault();
             let element2 = document.getElementById("employeeInput");
             element2.focus();
             document.getElementById('employeeInput').select()
-
-        } else if (event.key === 'ArrowLeft') {
-            event.preventDefault();
-            let element2 = document.getElementById("customerInput");
-            element2.focus();
-            document.getElementById('customerInput').select()
 
         }
 
@@ -679,9 +715,9 @@ echo "</script>";
         } else if (event.key === 'ArrowLeft') {
             event.preventDefault();
 
-            let element2 = document.getElementById("details");
+            let element2 = document.getElementById("customerInput");
             element2.focus();
-            document.getElementById('details').select()
+            document.getElementById('customerInput').select()
 
         } else if (event.key === 'ArrowUp') {
             event.preventDefault();
@@ -696,9 +732,11 @@ echo "</script>";
 
             if (document.getElementById('employeeId').value != "") {
 
-                let element2 = document.getElementById("incidenttypeInput");
+                let element2 = document.getElementById("details");
                 element2.focus();
-                document.getElementById('incidenttypeInput').select()
+                document.getElementById('details').select()
+
+
 
 
             }
@@ -743,9 +781,9 @@ echo "</script>";
                 highlightItememployee(currentIndex);
             }
         } else if (event.key === 'ArrowLeft') {
-            let element2 = document.getElementById("employeeInput");
+            let element2 = document.getElementById("branchInput");
             element2.focus();
-            document.getElementById('employeeInput').select()
+            document.getElementById('branchInput').select()
 
         } else if (event.key === 'ArrowUp') {
             $("#incidenttype").val("");
@@ -757,9 +795,9 @@ echo "</script>";
         } else if (event.key === 'Enter') {
             if (document.getElementById('incidenttype').value != "") {
 
-                let element2 = document.getElementById("branchInput");
+                let element2 = document.getElementById("customerInput");
                 element2.focus();
-                document.getElementById('branchInput').select()
+                document.getElementById('customerInput').select()
 
 
             }
@@ -808,9 +846,9 @@ echo "</script>";
                 highlightItememployee(currentIndex);
             }
         } else if (event.key === 'ArrowLeft') {
-            let element2 = document.getElementById("incidenttypeInput");
+            let element2 = document.getElementById("date");
             element2.focus();
-            document.getElementById('incidenttypeInput').select()
+            document.getElementById('date').select()
 
         } else if (event.key === 'ArrowUp') {
             $("#branchId").val("");
@@ -822,9 +860,11 @@ echo "</script>";
         } else if (event.key === 'Enter') {
             if (document.getElementById('branchId').value != "") {
 
-                let element2 = document.getElementById("productInput");
+                let element2 = document.getElementById("incidenttypeInput");
                 element2.focus();
-                document.getElementById('productInput').select()
+                document.getElementById('incidenttypeInput').value = "Sale";
+                document.getElementById('incidenttype').value = 1;
+                document.getElementById('incidenttypeInput').select()
 
 
             }
@@ -870,9 +910,9 @@ echo "</script>";
             }
 
         } else if (event.key === 'ArrowLeft') {
-            let element2 = document.getElementById("branchInput");
+            let element2 = document.getElementById("details");
             element2.focus();
-            document.getElementById('branchInput').select()
+            document.getElementById('details').select()
 
         } else if (event.key === 'ArrowUp') {
             //  $("#branchId").val("");
@@ -930,6 +970,8 @@ echo "</script>";
 
     }
 
+    let defaultstocktype = 0
+
     function handleStoreKeyPress() {
 
         const productElement = document.getElementById('storeInput');
@@ -976,7 +1018,7 @@ echo "</script>";
         } else if (event.key === 'Enter') {
             if (document.getElementById('storeId0').value != "") {
 
-                let element2 = document.getElementById("qty0");
+                let element2 = document.getElementById("unit0");
                 element2.focus();
                 element2.select();
 
@@ -993,6 +1035,8 @@ echo "</script>";
 
                 document.getElementById('storeInput').select()
                 document.getElementById('storeId0').value = results[currentIndex].id;
+                document.getElementById('unit0').value = unitlist.find(unit => unit.id == results[currentIndex].dstock).value;
+
 
                 avStock2(0, document.getElementById('productId0').value, results[currentIndex].id)
 
@@ -1006,6 +1050,87 @@ echo "</script>";
         } else {
             currentIndex = -1;
             displayResultsStore(results, count);
+
+        }
+
+    }
+
+    function handleUnitKeyPress() {
+
+        const productElement = document.getElementById('unit0');
+        const query = productElement.value;
+
+        console.log(unitlist)
+
+        const results = unitlist
+            .filter(unit => unit.value.toLowerCase().includes(query));
+        if (event.key === 'ArrowDown') {
+            $("#storeId0").val("");
+            // Move down in the list
+            if (currentIndex < results.length - 1) {
+                currentIndex++;
+                highlightItemunit(currentIndex);
+            }
+        } else if (event.key === 'ArrowLeft') {
+            let element2 = document.getElementById("storeInput");
+            element2.focus();
+            document.getElementById('storeInput').select()
+
+        } else if (event.key === 'ArrowUp') {
+            // Move up in the list
+            if (currentIndex > 0) {
+                currentIndex--;
+                highlightItemunit(currentIndex);
+            }
+        } else if (event.key === 'Escape') {
+            let element2 = document.getElementById("sale_discount");
+            element2.focus();
+            document.getElementById('sale_discount').select()
+            document.getElementById('product0').value = '';
+            document.getElementById('storeInput').value = '';
+            document.getElementById('unit0').value = '';
+            document.getElementById('avqty0').value = '';
+            document.getElementById('qty0').value = '';
+            document.getElementById('product_rate0').value = '';
+            document.getElementById('discount0').value = '';
+            document.getElementById('discount_value0').value = '';
+            document.getElementById('vat_percent0').value = '';
+            document.getElementById('vat_value0').value = '';
+            document.getElementById('total_price0').value = '';
+
+
+        } else if (event.key === 'Enter') {
+            if (document.getElementById('unit0').value != "") {
+
+                let element2 = document.getElementById("qty0");
+                element2.focus();
+                element2.select();
+
+
+
+            }
+            // Select the highlighted item
+            if (currentIndex >= 0 && currentIndex < results.length) {
+                if (document.getElementById('unit0').value == "") {
+                    alert("Unit shouldn't be empty")
+                    return
+                }
+
+                document.getElementById('unit0').value = unitlist.find(unit => unit.id == results[currentIndex].id).value;
+
+
+                avStock2(0, document.getElementById('productId0').value, document.getElementById('storeId0').value)
+
+                clearResults();
+            }
+
+
+
+        } else if (event.key === "Backspace") {
+            document.getElementById('storeId0').value = "";
+        } else {
+            currentIndex = -1;
+            displayResultsUnit(results, count);
 
         }
 
@@ -1179,7 +1304,7 @@ echo "</script>";
 
             if (e.key === 'ArrowLeft') {
                 if (type == 'qty') {
-                    let element2 = document.getElementById("storeInput");
+                    let element2 = document.getElementById("unit0");
                     element2.focus();
                     element2.select();
                 }
@@ -1371,6 +1496,10 @@ echo "</script>";
     }
 
 
+    unitlist = [];
+    conversionratio = 0;
+    conversionratioId = 0;
+
     function product_search2(item, name, id) {
 
         if (name === "product") {
@@ -1399,7 +1528,9 @@ echo "</script>";
                 success: function(response) {
                     let product = JSON.parse(response);
 
+                    console.log(product)
 
+                    conversionratio = 0
                     const matchedStore = stores.find(store => store.id.toLowerCase().includes(product[0].store.toLowerCase()));
                     document.getElementById('storeInput').value = matchedStore ? matchedStore.name : '';
 
@@ -1412,11 +1543,49 @@ echo "</script>";
                     avStock2(item, id, product[0].store);
 
                     document.getElementById('unit' + item).value = product[0].unit;
-                    document.getElementById('product_rate' + item).value = product[0].price;
+
+                    if (product[0].dstock == 1) {
+                        document.getElementById('unit' + item).value = product[0].unit;
+                        document.getElementById('product_rate' + item).value = product[0].price;
+
+                        document.getElementById('unittype' + item).value = "unit";
+                        document.getElementById('conversionratio' + item).value = 0;
+                        document.getElementById('conversion_id' + item).value = product[0].conversion_id;
+
+
+
+
+                    } else {
+                        document.getElementById('unit' + item).value = product[0].subunit;
+                        document.getElementById('product_rate' + item).value = product[0].sprice;
+                        document.getElementById('unittype' + item).value = "subunit";
+                        document.getElementById('conversionratio' + item).value = product[0].conversion_ratio;
+                        document.getElementById('conversion_id' + item).value = product[0].conversion_id;
+
+
+
+
+
+                    }
+
 
                     if (vtinfo.ischecked == 1) {
                         document.getElementById('vat_percent' + item).value = product[0].product_vat;
                     }
+                    unitlist = [];
+
+                    unitlist.push({
+                        id: 1,
+                        value: product[0].unit
+                    })
+                    unitlist.push({
+                        id: 0,
+                        value: product[0].subunit
+                    })
+                    conversionratio = product[0].conversion_ratio
+                    conversionratioId = product[0].conversion_id
+
+
                     //document.getElementById('vat_value' + item).value = 0;
 
 
@@ -1430,6 +1599,13 @@ echo "</script>";
 
 
         if (name === "store") {
+
+
+            console.log("store")
+            avStock2(item, id)
+        }
+
+        if (name === "unit") {
 
 
             avStock2(item, id)
@@ -1450,8 +1626,29 @@ echo "</script>";
             success: function(response) {
                 let stock = JSON.parse(response);
 
+                let id = unitlist.find(unit => unit.value.toLowerCase() == document.getElementById('unit0').value.toLowerCase()).id;
 
-                document.getElementById('avqty' + item).value = stock[0].avgqty == null ? 0 : stock[0].avgqty;
+                if (id == 0) {
+                    let st = stock[0].avgqty == null ? 0 : stock[0].avgqty
+                    st = stock[0].avgqty * conversionratio;
+                    document.getElementById('avqty' + item).value = st;
+                    document.getElementById('product_rate' + item).value = stock[0].sprice;
+                    document.getElementById('unittype' + item).value = "subunit";
+                    document.getElementById('conversionratio' + item).value = conversionratio;
+                    document.getElementById('conversion_id' + item).value = conversionratioId;
+
+
+                } else {
+                    document.getElementById('avqty' + item).value = stock[0].avgqty == null ? 0 : stock[0].avgqty;
+                    document.getElementById('product_rate' + item).value = stock[0].price;
+                    document.getElementById('unittype' + item).value = "unit";
+                    document.getElementById('conversionratio' + item).value = 0;
+                    document.getElementById('conversion_id' + item).value = conversionratioId;
+
+
+
+                }
+
 
 
             },
@@ -1607,6 +1804,26 @@ echo "</script>";
 
     }
 
+    function displayResultsUnit(results, count) {
+        console.log(results)
+        const searchResultsDiv = document.getElementById('unitResults1');
+        searchResultsDiv.innerHTML = ''; // Clear previous results
+        if (results.length === 0) {
+            searchResultsDiv.innerHTML = '<p>No results found</p>';
+        } else {
+            results.forEach((item, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.classList.add('resultItem');
+                resultItem.textContent = item.value;
+                resultItem.setAttribute('data-index', index);
+                searchResultsDiv.appendChild(resultItem);
+            });
+        }
+        currentIndex = 0
+        highlightItemunit(0);
+
+    }
+
 
 
     function highlightItemcustomer(index) {
@@ -1676,6 +1893,17 @@ echo "</script>";
         });
     }
 
+    function highlightItemunit(index) {
+        const items = document.querySelectorAll('.resultItem');
+        items.forEach((item, idx) => {
+            if (idx === index) {
+                item.classList.add('highlight');
+            } else {
+                item.classList.remove('highlight');
+            }
+        });
+    }
+
     function highlightItempayment(index) {
         const items = document.querySelectorAll('.resultItem');
         items.forEach((item, idx) => {
@@ -1695,11 +1923,16 @@ echo "</script>";
         document.getElementById('productResults1').innerHTML = '';
         document.getElementById('branchResults1').innerHTML = '';
         document.getElementById('storeResults1').innerHTML = '';
+        document.getElementById('unitResults1').innerHTML = '';
+
         document.getElementById('paymentResults1').innerHTML = '';
     }
 
 
     $(document).ready(function() {
+        let element2 = document.getElementById("branchInput");
+            element2.focus();
+            document.getElementById('branchInput').select()
         getBranchDropdown(0);
         for (let j = 2; j <= 20; j++) {
             document.getElementById('myRow' + j).style.display = 'none';
@@ -1810,6 +2043,10 @@ echo "</script>";
         document.getElementById('vat_percent' + count).innerHTML = document.getElementById('vat_percent0').value ? document.getElementById('vat_percent0').value : 0
         document.getElementById('vat_value' + count).innerHTML = document.getElementById('vat_value0').value ? parseFloat(document.getElementById('vat_value0').value).toFixed(2) : 0.00
         document.getElementById('total_price' + count).innerHTML = document.getElementById('total_price0').value ? parseFloat(document.getElementById('total_price0').value).toFixed(2) : 0.00
+        document.getElementById('unittype' + count).value = document.getElementById('unittype0').value;
+        document.getElementById('conversionratio' + count).value = document.getElementById('conversionratio0').value;
+        document.getElementById('conversion_id' + count).value = document.getElementById('conversion_id0').value;
+
 
         count = count + 1;
 
@@ -2035,11 +2272,23 @@ echo "</script>";
         for (let i = 2; i < count; i++) {
             if (document.getElementById('myRow' + i).style.display != "none") {
                 // var dropdown = document.getElementById('productId' + i);
+
+                let qty = 0;
+                if (document.getElementById('unittype' + i).value == "unit") {
+                    qty = parseFloat(document.getElementById('qty' + i).innerHTML)
+
+                } else {
+                    qty = parseFloat(document.getElementById('qty' + i).innerHTML) /
+                        parseFloat(document.getElementById('conversionratio' + i).value)
+
+                }
+
+
                 arrItem.push({
                     product: document.getElementById('productId' + i).value,
                     product_name: document.getElementById('product' + i).innerHTML,
                     store: document.getElementById('storeId' + i).value,
-                    quantity: document.getElementById('qty' + i).innerHTML,
+                    quantity: qty,
                     product_rate: document.getElementById('product_rate' + i).innerHTML,
                     discount: document.getElementById('discount' + i).innerHTML,
                     discount_value: document.getElementById('discountval' + i).innerHTML,
@@ -2048,7 +2297,13 @@ echo "</script>";
                     total_price: document.getElementById('total_price' + i).innerHTML,
                     total_discount: 0,
                     all_discount: 0,
+                    unittype: document.getElementById('unittype' + i).value,
+                    conversionratio: document.getElementById('conversionratio' + i).value,
+                    conversion_id: document.getElementById('conversion_id' + i).value,
+
+
                 });
+
 
             }
 

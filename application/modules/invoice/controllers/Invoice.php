@@ -2133,7 +2133,8 @@ class Invoice extends MX_Controller
 
         $query = "
     INSERT INTO sale 
-    (id,sale_id, date, details, type2, discount, total_discount_ammount, total_vat_amnt, grandTotal, total,customer_id,employee_id,payment_type,lastupdateddate,createddate,userid,incidenttype,already,branch) 
+    (id,sale_id, date, details, type2, discount, total_discount_ammount, total_vat_amnt, grandTotal, total,customer_id,employee_id,payment_type,lastupdateddate,createddate,userid,
+    incidenttype,already,branch) 
     VALUES 
     (0,AES_ENCRYPT('{$num}', '{$encryption_key}') , 
      '{$this->input->post('date', TRUE)}',
@@ -2169,14 +2170,15 @@ class Invoice extends MX_Controller
             $qu = -$item['quantity'];
             $query = "
             INSERT INTO stock_details 
-            (id,product, store, stock, type, pid,date) 
+            (id,product, store, stock, type, pid,date,conversion_id) 
             VALUES 
             (0, 
              '{$item['product']}', 
              '{$item['store']}', 
              AES_ENCRYPT('{$qu}', '{$encryption_key}'),
              'sales',
-             '{$inserted_id}','{$this->input->post('date', TRUE)}'
+             '{$inserted_id}','{$this->input->post('date', TRUE)}',
+              '{$item['conversion_id']}'
             );
         ";
             $this->db->query($query);
@@ -2187,14 +2189,16 @@ class Invoice extends MX_Controller
             if ($store->auto_gdn == 0) {
                 $query = "
                 INSERT INTO phystock_details 
-                (id,product, store, stock, type, pid,date) 
+                (id,product, store, stock, type, pid,date,conversion_id) 
                 VALUES 
                 (0, 
                  '{$item['product']}', 
                  '{$item['store']}', 
                  AES_ENCRYPT('{$qu}', '{$encryption_key}'),
                  'sales',
-                 '{$inserted_id}','{$this->input->post('date', TRUE)}'
+                 '{$inserted_id}','{$this->input->post('date', TRUE)}',
+                  '{$item['conversion_id']}'
+
                 );
             ";
                 $this->db->query($query);
@@ -2203,7 +2207,8 @@ class Invoice extends MX_Controller
             $query = "
             INSERT INTO sale_details 
             (id, pid, product, store, quantity, 
-            product_rate,discount,discount_value,vat_percent,vat_value,total_price,total_discount,all_discount,type2) 
+            product_rate,discount,discount_value,vat_percent,vat_value,total_price,total_discount,all_discount,
+            type2,conversionratio,unittype,conversion_id) 
             VALUES 
             (0, 
              '{$inserted_id}', 
@@ -2218,7 +2223,10 @@ class Invoice extends MX_Controller
               AES_ENCRYPT('{$item['total_price']}', '{$encryption_key}'), 
               AES_ENCRYPT('{$item['total_discount']}', '{$encryption_key}'), 
               AES_ENCRYPT('{$item['all_discount']}', '{$encryption_key}'),
-               AES_ENCRYPT('{$this->input->post('type2', TRUE)}', '{$encryption_key}')
+               AES_ENCRYPT('{$this->input->post('type2', TRUE)}', '{$encryption_key}'),
+               AES_ENCRYPT('{$item['conversionratio']}', '{$encryption_key}'),
+            '{$item['unittype']}', '{$item['conversion_id']}'
+
             );";
 
             $this->db->query($query);

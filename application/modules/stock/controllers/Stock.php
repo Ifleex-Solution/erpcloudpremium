@@ -522,12 +522,44 @@ class Stock extends MX_Controller
     pi.product_model,
     AES_DECRYPT(pi.cost_price, '{$encryption_key}') AS cost_price,
     pi.product_details,
-    pi.store");
+    pi.store,pi.subunit,cr.conversion_ratio,
+        AES_DECRYPT(pi.sprice, '{$encryption_key}') AS sprice,
+         AES_DECRYPT(pi.scost_price, '{$encryption_key}') AS scost_price,s.dstock,cr.conversionratio_id as conversion_id
+");
         $this->db->from('product_information pi');
+        $this->db->join('conversion_ratio cr', 'cr.product = pi.id', 'left');
+        $this->db->join('store s', 's.id = pi.store', 'left');
         $this->db->where('pi.id', $this->input->post('prodid', TRUE));
+        $this->db->where('cr.status', 1);
+
+
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             echo json_encode($query->result_array());
+        }else{
+            $this->db->select("pi.product_id,
+            pi.product_name,
+            pi.category_id,
+            pi.unit,
+            pi.product_vat,
+            pi.serial_no,
+            AES_DECRYPT(pi.price, '{$encryption_key}') AS price,
+            pi.product_model,
+            AES_DECRYPT(pi.cost_price, '{$encryption_key}') AS cost_price,
+            pi.product_details,
+            pi.store,pi.subunit,cr.conversion_ratio,
+                AES_DECRYPT(pi.sprice, '{$encryption_key}') AS sprice,
+                 AES_DECRYPT(pi.scost_price, '{$encryption_key}') AS scost_price,s.dstock,cr.conversionratio_id as conversion_id
+        ");
+                $this->db->from('product_information pi');
+                $this->db->join('conversion_ratio cr', 'cr.product = pi.id', 'left');
+                $this->db->join('store s', 's.id = pi.store', 'left');
+                $this->db->where('pi.id', $this->input->post('prodid', TRUE));
+                $query2 = $this->db->get();
+                if ($query2->num_rows() > 0) {
+                    echo json_encode($query2->result_array());
+                }
+        
         }
         return false;
     }
@@ -582,7 +614,9 @@ class Stock extends MX_Controller
     {
         $encryption_key = Config::$encryption_key;
 
-        $this->db->select('sum(AES_DECRYPT( sd.stock , "' . $encryption_key . '"))  as avgqty');
+        $this->db->select('sum(AES_DECRYPT( sd.stock , "' . $encryption_key . '"))  as avgqty,
+         AES_DECRYPT(pi.price,"' . $encryption_key . '") AS price,
+          AES_DECRYPT(pi.sprice,"' . $encryption_key . '") AS sprice');
         $this->db->from('stock_details sd');
         // $this->db->join('stockbatch sb', 'sb.id = sd.batch_id', 'inner');
         $this->db->join('product_information pi', 'pi.id = sd.product', 'inner');
